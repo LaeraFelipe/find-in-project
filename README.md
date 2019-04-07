@@ -7,9 +7,11 @@ npm install --save find-in-project
 
 #Example
 
+Create an .js file with the following content:
+
 const findInProject = require('find-in-project');
 
-const options = {
+const options = { 
   find: ["(%value%)"],
   resultFilename: "result.txt",
   exclude: ["node_modules"],
@@ -18,3 +20,9 @@ const options = {
 }
 
 findInProject(options);
+
+Run with: "node {YOUR FILE}". 
+
+If you want do ignore existent cache run: "node {YOUR FILE} ignore-cache".
+
+

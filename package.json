@@ -1,0 +1,11 @@
+{
+  "name": "find-in-project",
+  "version": "1.0.0",
+  "description": "Procura valores nos arquivos do projeto.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Felipe Laera",
+  "license": "ISC"
+}

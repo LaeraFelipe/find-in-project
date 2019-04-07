@@ -18,7 +18,7 @@ function formatResult(items, customTemplate) {
 function formatResultItem(result, customTemplate) {
   const template = customTemplate || DEFAULT_RESULT_ITEM_TEMPLATE;
   return template.replace(VALUE_IDENTIFIER, result.value)
-    .replace(FILE_IDENTIFIER, result.file);
+    .replace(FILE_IDENTIFIER, result.file.replace(/\\/g,'\\\\'));
 }
 
 /**Escreve resultado em arquivo. */

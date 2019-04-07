@@ -23,6 +23,6 @@ findInProject(options);
 
 Run with: "node {YOUR FILE}". 
 
-If you want do ignore existent cache run: "node {YOUR FILE} ignore-cache".
+If you want to ignore existent cache run: "node {YOUR FILE} ignore-cache".
 
 

@@ -1,10 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const escapeForRegex = require('./escapeForRegex');
-const { VALUE_IDENTIFIER, FILE_IDENTIFIER, TEMPLATE_IDENTIFIER } = require('./identifiers');
-
-/**Nome padrão do arquivo de resultado. */
-const DEFAULT_RESULT_FILE_NAME = 'result.txt';
+const { VALUE_IDENTIFIER, FILE_IDENTIFIER, TEMPLATE_IDENTIFIER, DEFAULT_FILENAME } = require('./global-constants');
 
 /**Template de item de resultado padrão. */
 const DEFAULT_RESULT_ITEM_TEMPLATE = `${VALUE_IDENTIFIER}\n`;
@@ -29,9 +26,9 @@ exports.writeResult = function (results, options) {
   const formatedResultItems = results.map(item => formatResultItem(item, options.resultItemTemplate)).join("");
   let resultToWrite = formatResult(formatedResultItems, options.resultTemplate);
 
-  const filename = path.join(path.dirname(require.main.filename), options.resultFilename || DEFAULT_RESULT_FILE_NAME);
+  const filename = path.join(path.dirname(require.main.filename), options.resultFilename || DEFAULT_FILENAME);
 
-  if (options.sync === undefined || options.sync) {
+  if ((options.sync === undefined || options.sync) && !process.argv.find(item => item === 'ignore-cache')) {
     try {
       let existentResult = fs.readFileSync(filename, { encoding: 'utf8' });
       if (existentResult) {

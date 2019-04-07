@@ -3,6 +3,7 @@ const path = require('path');
 const cache = require('./cache');
 const { queryText } = require('./queryText');
 const { writeResult } = require('./writeResult');
+const { DEFAULT_FILENAME } = require('./global-constants');
 
 /**Busca valores nos arquivos do projeto. */
 function findInFile(filename, query) {
@@ -25,9 +26,12 @@ function isExcluded(filename, options) {
 /**Adiciona resultado. */
 function addResults(newResults, results, options) {
   newResults.forEach(newResult => {
-    if (!results.find(existentResult => existentResult.value === newResult.value) && !cache.hasInCache(newResult)) {
+    if (!results.find(existentResult => existentResult.value === newResult.value) &&
+      (options.sync === undefined || options.sync) ? !cache.hasInCache(newResult) : true) {
       results.push(newResult);
-      cache.addToCache(newResult);
+      if (options.sync === undefined || options.sync) {
+        cache.addToCache(newResult);
+      }
     }
   })
 }
@@ -55,11 +59,20 @@ function findInProject(options, filename = path.dirname(require.main.filename), 
 }
 
 module.exports = function (options) {
-  console.log('Runing')
-  cache.loadCache(options.filename || "result.txt");
+  if (options.sync === undefined || options.sync) {
+    cache.loadCache(options.filename || DEFAULT_FILENAME);
+  }
+
   const result = findInProject(options);
   writeResult(result, options);
-  cache.writeCache();
+
+  if (options.sync === undefined || options.sync)
+    cache.writeCache();
+
   console.clear();
-  console.log('Complete')
+  console.log('Complete');
+
+  setTimeout(() => {
+    console.clear();
+  }, 2000)
 }

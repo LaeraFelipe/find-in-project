@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+
 /**Pasta do cache. */
 const CACHE_DIRECTORY = 'pf_cache';
 
@@ -11,6 +12,12 @@ exports.loadCache = function (requestedFilename) {
   const cacheFilename = requestedFilename.replace(path.extname(requestedFilename), '');
   filename = `${CACHE_DIRECTORY}/${cacheFilename}.json`;
   filename = path.join(path.dirname(require.main.filename), filename);
+
+  if (process.argv.find(item => item === 'ignore-cache')) {
+    cache = {};
+    return;
+  }
+
   if (cache)
     return cache;
   else {
@@ -39,6 +46,6 @@ exports.writeCache = function () {
   if (!fs.existsSync(path.dirname(filename))) {
     fs.mkdirSync(path.dirname(filename));
   }
-  fs.writeFileSync(filename, JSON.stringify(cache), { encoding: 'utf8' });
+  fs.writeFileSync(filename, JSON.stringify(cache,0,2), { encoding: 'utf8' });
 }
 

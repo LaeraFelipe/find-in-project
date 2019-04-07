@@ -1,8 +1,8 @@
-const { VALUE_IDENTIFIER } = require('./identifiers');
+const { VALUE_IDENTIFIER } = require('./global-constants');
 const escapeForRegex = require('./escapeForRegex');
 
 /**Regex interno. */
-const INTERNAL_REGEX = '[\\w\\.\\?\\!\\s\\,\\(\\)]{1,}';
+const INTERNAL_REGEX = '.{1,}';
 
 /**Executa o regex e devolve resultados. */
 function executeRegex(content, query) {

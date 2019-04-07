@@ -7,7 +7,7 @@ npm install --save find-in-project
 
 #Example
 
-const findInProject = require('../index');
+const findInProject = require('find-in-project');
 
 const options = {
   find: ["(%value%)"],

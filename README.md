@@ -11,10 +11,10 @@ const findInProject = require('find-in-project');
 
 const options = {
   find: ["(%value%)"],
-  resultFilename: "result.json",
+  resultFilename: "result.txt",
   exclude: ["node_modules"],
-  resultItemTemplate: "\"%value%\": \"%file%\",\n",
-  resultTemplate: "{\n%template%}",
+  resultItemTemplate: "%value% - %file%\n",
+  resultTemplate: "INIT\n%template%END"
 }
 
 findInProject(options);

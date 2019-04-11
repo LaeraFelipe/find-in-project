@@ -1,4 +1,4 @@
-const { VALUE_IDENTIFIER } = require('./global-constants');
+const { VALUE_IDENTIFIER } = require('./constants');
 const escapeForRegex = require('./escapeForRegex');
 
 /**Regex interno. */

@@ -1,9 +1,9 @@
 const fs = require('fs');
 const path = require('path');
-const cache = require('./cache');
+const history = require('./history');
 const { queryText } = require('./queryText');
 const { writeResult } = require('./writeResult');
-const { DEFAULT_FILENAME } = require('./global-constants');
+const FindInProjectConfiguration = require('./configuration');
 
 /**Busca valores nos arquivos do projeto. */
 function findInFile(filename, query) {
@@ -27,17 +27,17 @@ function isExcluded(filename, options) {
 function addResults(newResults, results, options) {
   newResults.forEach(newResult => {
     if (!results.find(existentResult => existentResult.value === newResult.value) &&
-      (options.sync === undefined || options.sync) ? !cache.hasInCache(newResult) : true) {
+      (options.sync === undefined || options.sync) ? !history.hasIn(newResult) : true) {
       results.push(newResult);
       if (options.sync === undefined || options.sync) {
-        cache.addToCache(newResult);
+        history.add(newResult);
       }
     }
   })
 }
 
 /**Loopa nos arquivos do projeto. */
-function findInProject(options, filename = path.dirname(require.main.filename), results = []) {
+function findInProject(options, filename, results = []) {
   const files = fs.readdirSync(filename);
   for (const internalFilename of files) {
     const fullPath = path.join(filename, internalFilename);
@@ -59,15 +59,14 @@ function findInProject(options, filename = path.dirname(require.main.filename), 
 }
 
 module.exports = function (options) {
-  if (options.sync === undefined || options.sync) {
-    cache.loadCache(options.filename || DEFAULT_FILENAME);
-  }
+  const validOptions = new FindInProjectConfiguration(options);
 
-  const result = findInProject(options);
-  writeResult(result, options);
+  if (validOptions.useHistory)
+    history.load(validOptions);
 
-  if (options.sync === undefined || options.sync)
-    cache.writeCache();
+  const result = findInProject(validOptions, validOptions.source);
+  writeResult(result, validOptions);
+  history.write(validOptions);
 
   console.clear();
   console.log('Complete');

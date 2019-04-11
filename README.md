@@ -7,14 +7,22 @@ npm install --save find-in-project
 
 #Example
 
-const findInProject = require('../index');
+Create an .js file with the following content:
 
-const options = {
+const findInProject = require('find-in-project');
+
+const options = { 
   find: ["(%value%)"],
-  resultFilename: "result.json",
+  resultFilename: "result.txt",
   exclude: ["node_modules"],
-  resultItemTemplate: "\"%value%\": \"%file%\",\n",
-  resultTemplate: "{\n%template%}",
+  resultItemTemplate: "%value% - %file%\n",
+  resultTemplate: "INIT\n%template%END"
 }
 
 findInProject(options);
+
+Run with: "node {YOUR FILE}". 
+
+If you want to ignore existent cache run: "node {YOUR FILE} ignore-cache".
+
+
